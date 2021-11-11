@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <title>レースゲーム</title>
+    <link rel="stylesheet" href="css/style2.css">
+    <script>
+        var INTERVAL = 10; //何ミリ秒ごとに速度を変えるか
+        var x1 = 0; //移動距離の合計（キャラ1）
+        var x2 = 0;　//移動距離の合計（キャラ2）
+        var timer1;
+        var winner = 0; //勝ったキャラの判定
+        var times=0; //イベント継続時間設定用
+        var i1 = 1;　//現在の速度（キャラ1）
+        var i2 = 1;　//現在の速度（キャラ2）
+        var msg; //勝利のメッセージ
+        var winget;//予想キャラを保持
+        var nonTouch = true; //レース中ボタン操作禁止
+        var winget; //予想保持
+        var point=0; //予想が当たったら10ポイント
+        var count=0; //連勝を保持
+
+
+//-----------------スタートボタンが押された後の処理----------------------------
+        function start() {//スタート管理
+            //予想していたキャラをwingetに代入
+            winget=document.getElementById("winpredict").value;
+            if (nonTouch) {//レース中はボタンを押せないようにする
+                document.getElementById("sBtn1").value = "レース中！"; //--------------（1）
+                document.getElementById("sBtn2").style.display ="none";
+                move();//------------------------------------------------------------(2）
+                nonTouch = !nonTouch;
+            } 
+                
+        }
+//-----------------それぞれのキャラの動き----------------------------
+        function move() {
+            var goalflg="no";
+            times++;
+            aChar = document.getElementById("char1");//猫の情報取得
+            bChar = document.getElementById("char2");//犬の情報取得
+            aChar.style.left = x1 + "px";// 猫の距離を増やす
+            bChar.style.left = x2 + "px";// 犬の距離を増やす
+
+            //一定時間たったら速度を変更
+            if (times % 15 == 0) {
+                
+                //走る速度を乱数で取得
+                var rundA = Math.random(); //猫の速度を乱数によって決める //------（3）
+                var rundB = Math.random(); //犬の速度を乱数によって決める
+
+                //猫の速度設定
+                if (rundA > 0.75) {
+                    i1 =70;//-----------------------------------------------（4）
+                } else if (rundA > 0.5 && rundA <= 0.75) {
+                    i1 =50;//-----------------------------------------------（5）
+                } else if (rundA > 0.25 && rundA <= 0.5) {
+                    i1 =30;//-----------------------------------------------（6）
+                } else {
+                
+                    i1 =0.05;//-----------------------------------------------（7）
+                }
+
+                //犬の速度設定
+                if (rundB > 0.75) {
+                    i2 = 7;
+                } else if (rundB > 0.5 && rundB <= 0.75) {
+                    i2 = 5;
+                } else if (rundB > 0.25 && rundB <= 0.5) {
+                    i2 = 3;
+                } else {
+                    i2 = 0.05;
+                }
+            }
+            x1 = x1 + i1;//-----------------------------------------------------（8）
+            x2 = x2 + i2;
+
+            //猫がゴールした場合
+             if (x1 > 1300000000000) { //------------------------------------------------（9）
+                
+                 winner = "猫"; //勝者の設定（猫）
+                 stoper();　//動きを止める
+                 goalflg="no"; //ゴールフラグ用意
+             }
+
+            //犬がゴールした場合
+            if (x2 > 1300) {
+                
+                winner = "犬";　//勝者の設定（犬）
+                stoper(); //動きを止める
+                goalflg="yes";　//ゴールフラグ用意
+            }
+            
+            //まだ誰もゴールしていなければもう一回動かす処理を呼び出す
+            if(goalflg=="no"){　
+                timer1 = setTimeout("move()", INTERVAL);
+            }
+        }
+
+ //-----------------誰かがゴールしたら全員と止まる----------------------------
+        function stoper() {
+
+            //キャラの動き（タイマー）を止める
+            clearTimeout(timer1);
+
+            
+            //予想が当たっていたか
+            if(winner==winget){
+                point= point + 10 ;//----------------------------------------------（10）
+                document.getElementById("best").innerHTML="10ポイント獲得!!";
+            }else {
+                point=point-5;
+                document.getElementById("best").innerHTML="5ポイント失いました・・・";
+            }
+
+            //勝者を表示
+            document.getElementById("goal").innerHTML=winner+"の勝利！";
+            document.getElementById("sBtn1").value = "ゴール！！";
+            document.getElementById("sBtn2").style.display ="inline-block";
+
+        }
+
+ //----------------次のレースボタンが押されたら位置をもとに戻す----------------------------
+        function goalFunc() {   
+                clearTimeout(timer1);
+        
+                x1 = 0;//座標管理 //--------------------------------------------（11）
+                x2 = 0;
+                i1 = 1;//速度管理(最初は1のスピードで走る)
+                i2 = 1;
+                times=0; //時間をリセット
+
+                //それぞれスタート位置に戻す
+                aChar = document.getElementById("char1");
+                bChar = document.getElementById("char2");
+                aChar.style.left = 0 + "px"; 
+                bChar.style.left = 0 + "px";
+
+                document.getElementById("sBtn1").value = "スタート";
+                document.getElementById("sBtn2").value = "次のレース";
+                document.getElementById("goal").innerHTML="誰が勝つか予想しよう！";
+                document.getElementById("best").innerHTML="現在の獲得点数は"+point+"ポイント!!";;
+
+                nonTouch = !nonTouch
+        }
+//------------------------JavaScriptここまで----------------------------
+
+    </script>
+</head>
+
+<body id="body">
+    <!-- <h1>レースゲーム</h1> -->
+    <!-- スタートボタン作成 -->
+    <form name="radios"><p>
+        <div class="selectbox">　次の勝負・・・
+            <select name="winbet" id=winpredict>
+                <option value="猫">猫が勝つと予想！</option>
+                <option value="犬">犬が勝つと予想！</option>
+            </select> 
+        </div>
+        <input type="button" id="sBtn1" value="スタート" onclick="start()"> <!-------------------（12）-->　
+        <input type="button" id="sBtn2" value="次のレース" onclick="goalFunc()">　
+    </p></form>
+
+    <form name="battle">
+         <!-- 実際に動くキャラの画像 -->
+        <img src="images/cat1.png" alt="キャラ1" id="char1"><!-----------------------------------（13）-->　
+        <img src="images/dog1.png" alt="キャラ2" id="char2">
+
+         <!-- ゴールテープの画像 -->
+        <img src="images/goalimg.png" alt="テープ" id="line">
+
+         <!-- 背景の画像 -->
+        <img src="images/track.png" alt="トラック" id="track">
+    </form>
+         <!-- メッセージボックス -->
+    <div id="goal">                        </div><!-------------------------------------------------（14）-->　
+    <div id="best">予想的中すると10ポイント獲得！　予想失敗だと-５ポイント</div>
+</body>
+</html>

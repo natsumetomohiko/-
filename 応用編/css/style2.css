@@ -1,0 +1,134 @@
+    @charset "utf-8";
+
+    /* 猫のキャラ位置 */
+    #char1 {
+      position: absolute;
+      z-index: 10;
+      top: 170px;
+      left: 0px;
+      height: 90px;
+      width: 150px;
+    }
+
+    /* 犬のキャラ位置 */
+    #char2 {
+      position: absolute;
+      z-index: 20;
+      top: 300px;
+      left: 0px;
+      height: 90px;
+      width: 150px;
+    }
+
+    /* ゴールテープの位置 */
+    #line{
+      position: absolute;
+      z-index: 5;
+      top: 50px;
+      left: 1400px;
+      height: 600px;
+      width: 200px;
+
+    }
+
+    /* 背景画像（トラック）の位置 */
+    #track{
+      position: absolute;
+      height: 500px;
+      width: 1550px;
+    }
+
+    /* 下に表示している文字の色（勝者） */
+    #goal {
+      text-align: center;
+      margin: 20px;
+      margin-top: 510px;
+      font-size: 350%;
+      color: rgb(194, 6, 116);
+    }
+
+    /* 下に表示している文字の色（ポイント） */
+    #best {
+      text-align: center;
+      margin: 20px;
+      margin-top: -40px;
+      font-size: 200%;
+      color: rgba(255, 154, 1, 0.973);
+    }
+
+    /* スタートボタンの設定 */
+    #sBtn1 {
+      margin-left: 50px;
+      margin-top: 10px;
+      display       : inline-block;
+      border-radius : 20%;          /* 角丸       */
+      font-size     : 19pt;        /* 文字サイズ */
+      text-align    : center;      /* 文字位置   */
+      cursor        : pointer;     /* カーソル   */
+      padding       : 12px 12px;   /* 余白       */
+      background    : #ff7f00;     /* 背景色     */
+      color         : #ffffff;     /* 文字色     */
+      line-height   : 1em;         /* 1行の高さ  */
+      transition    : .3s;         /* なめらか変化 */
+      box-shadow    : 6px 6px 3px #666666;  /* 影の設定 */
+      border        : 2px solid #ff7f00;    /* 枠の指定 */
+    }
+    #sBtn1:hover {
+      box-shadow    : none;        /* カーソル時の影消去 */
+      color         : #ff7f00;     /* 背景色     */
+      background    : #ffffff;     /* 文字色     */
+    }
+
+    /* リセットボタンの設定 */
+    #sBtn2 {
+      margin-left: 50px;
+      margin-top: 10px;
+      display       : none;
+      border-radius : 20%;          /* 角丸       */
+      font-size     : 19pt;        /* 文字サイズ */
+      text-align    : center;      /* 文字位置   */
+      cursor        : pointer;     /* カーソル   */
+      padding       : 12px 12px;   /* 余白       */
+      background    : #fce0ca;     /* 背景色     */
+      color         : #fc6913;     /* 文字色     */
+      line-height   : 1em;         /* 1行の高さ  */
+      transition    : .3s;         /* なめらか変化 */
+      box-shadow    : 6px 6px 3px #666666;  /* 影の設定 */
+      border        : 2px solid #fce0ca;     /* 枠の指定 */
+    }
+    #sBtn2:hover {
+      box-shadow    : none;        /* カーソル時の影消去 */
+      color         : #b8601c;     /* 背景色     */
+      background    : #d1946f;      /* 文字色     */
+    }
+
+    /* プルダウンの設定 */
+    .selectbox {
+        display: inline-block;
+        width:15%;
+        margin-left:100px;
+        position:relative;
+    }
+    select{
+      -webkit-appearance:none;
+        appearance:none;
+      width:100%;
+      padding:1em 1em;
+      box-sizing:border-box;
+      font-size:1em;
+      border:#ccc 1px solid;
+      border-radius:0;
+      background:#fff;
+    }
+    .selectbox::after{
+      content:"";
+      display:block;
+      width:10px;
+      height:10px;
+      position:absolute;
+      right:5%;
+      top:35%;
+      border-bottom:#333 2px solid;
+      border-right:#333 2px solid;
+      transform:rotate(45deg)translateY(-30%);
+    }
